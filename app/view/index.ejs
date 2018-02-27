@@ -19,6 +19,7 @@
 
 <body>
   <% include ./public/head %>
+  <input id="page" type="hidden" value="0">
   <div class="container">
       <div class="row">
           <div class="col-xs-8">
@@ -33,6 +34,10 @@
                         <a href="/">栏目标题</a>
                       </span>
                       <b>文章</b>推荐</h2>
+                  </div>
+                  <div>
+                      <a href="#" class="btn btn-link btn-xs" id="previous">上一页</a>
+                      <a href="#" class="btn btn-link btn-xs" id="next">下一页</a>
                   </div>
               </div>
           </div>
@@ -51,26 +56,57 @@
 </body>
 <script>
   $(function(){
-    //分页查询文章
-    $.post('/findArticlePage',{query:{},page:0,pagesize:10},function(data){
-    var articles = data.articles;
+    articlePage($("#page").val(),10);
+
+    $("#previous").click(function(){
+      $(".blogs").remove();
+      var page = $("#page").val();
+      articlePage(page-1,10);
+      $("#page").val(page-1);
+    });
+    
+    $("#next").click(function(){
+      $(".blogs").remove();
+      var page = $("#page").val();
+      articlePage(page+1,10);
+      $("#page").val(page+1);
+    });
+  });
+
+  function articlePage(page, pagesize) {
+    console.log(parseInt(page) < 0);
+    if(parseInt(page) < 0){
+      return;
+    }else if(page == 0){
+      $("#previous").addClass("disabled");
+    }else if(page > 0){
+      $("#previous").removeClass("disabled");
+    }
+    $.post('/findArticlePage',{query:{},page:page,pagesize:pagesize},function(data){
+      var articles = data.articles;
+      for(var i=0 ; i< articles.length; i++){
+        appendArticle(articles[i]);
+      }
+    });
+  }
+
+  function appendArticle(articles) {
     var images = ['01','02','03','04','05','06'];
-    for(var i=0 ; i< articles.length; i++){
-        $("#articleList").append(
+    $("#articleList").append(
         "<div class='blogs'>"+
         "<figure>"+
         "<img src='public/images/"+images[Math.floor(Math.random()*6)]+".jpg'>"+
         "</figure>"+
         "<ul>"+
             "<h3>"+
-            "<a href='./showArticle?id="+articles[i]._id+"'>"+articles[i].title+"</a>"+
+            "<a href='./showArticle?id="+articles._id+"'>"+articles.title+"</a>"+
             "</h3>"+
-            "<p>"+articles[i].content+"</p>"+
+            "<p>"+articles.content+"</p>"+
             "<p class='autor'>"+
             "<span class='lm f_l'>"+
                 "<a href='/'>个人博客</a>"+
             "</span>"+
-            "<span class='dtime f_l'>"+articles[i].createTime.substring(0,10)+"</span>"+
+            "<span class='dtime f_l'>"+articles.createTime.substring(0,10)+"</span>"+
             "<span class='viewnum f_r'>浏览（"+
         "<a href='/'>459</a>）</span>"+
             "<span class='pingl f_r'>评论（"+
@@ -78,10 +114,7 @@
             "</p>"+
         "</ul>"+
         "</div > "
-        );
-    }
-    });
-  });
+    );
+  }
 </script>
-
 </html>
