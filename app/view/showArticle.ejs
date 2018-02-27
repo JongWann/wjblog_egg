@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>无力吐槽的银酱</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link href="public/css/base.css" rel="stylesheet">
+    <link href="public/css/index.css" rel="stylesheet">
+    <link href="public/css/layui.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript" src="public/js/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="public/js/sliders.js"></script>
+    <script type="text/javascript" src="public/js/layui.all.js"></script>
+</head>
+<body>
+<header>
+    <div class="logo f_l">
+        <a href="/">
+            <img src="public/images/logo.png">
+        </a>
+    </div>
+    <nav id="topnav" class="f_r">
+        <ul>
+            <a href="/">首页</a>
+            <a href="#">关于我</a>
+            <a href="#">文章</a>
+            <a href="#">心情</a>
+            <a href="#">相册</a>
+            <a href="#">留言</a>
+        </ul>
+        <script src="public/js/nav.js"></script>
+    </nav>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <% if(article.title){ %> <h3><%=article.title%></h3> <% } %>
+            <% if(article.title){ %> <h4><%=article.createTime%></h4> <% } %>
+            <% if(article.content){ %> <%- article.content -%> <% } %>
+            <a href="/">返回</a>
+        </div>
+        <div class="col-lg-4" >
+            <% include ./public/right %>
+        </div>
+    </div>
+</div>
+<footer>
+    <p class="ft-copyright">
+        <a href="http://www.miitbeian.gov.cn/">ICP证：鄂ICP备18003581号</a>
+    </p>
+    <div id="tbox">
+        <a id="togbook" href="/"></a>
+        <a id="gotop" href="javascript:void(0)"></a>
+    </div>
+</footer>
+</body>
+<script>
+</script>
+</html>

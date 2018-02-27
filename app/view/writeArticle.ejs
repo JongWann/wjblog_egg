@@ -1,0 +1,84 @@
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>无力吐槽的银酱</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.css" rel="stylesheet">
+    <script type="text/javascript" src="public/js/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="panel-title">写文章</h3>
+        </div>
+        <div class="col-lg-12">
+            <form id="formData">
+                <div class="form-group">
+                    <label for="name">标题</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="请输入文章标题">
+                </div>
+                <div class="form-group">
+                    <label for="name">内容</label>
+                    <!-- <textarea class="form-control" name="content" id="content" rows="20"></textarea> -->
+                    <div id="editor"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <button id="tj" class="btn btn-default btn-primary" style="float:right">提交</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="public/js/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+<script>
+    $(function(){
+        var E = window.wangEditor;
+        var editor = new E('#editor');
+        editor.create();
+        $("#formData").bootstrapValidator({
+            live: 'disabled',
+            submitButtons: '#tj',
+            message: '校验失败',//通用的验证失败信息
+            feedbackIcons: {//根据验证结果显示的各种图标  
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                title: {
+                    validators: {
+                        notEmpty: {//检测非空,radio也可用  
+                            message: '标题不能为空'
+                        },
+                        stringLength: {//检测长度  
+                            min: 1,
+                            max: 30,
+                            message: '长度必须在1-30之间'
+                        }
+                    }
+                }
+            }
+        });
+        $("#tj").click(function () {
+            $("#formData").bootstrapValidator('validate');//提交验证  
+            if ($("#formData").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
+                var content = editor.txt.html();
+                var title = $("input[name='title']").val();
+                $.post('/commitArticle', {title:title,content:content}, function (data) {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                });
+            }
+        })
+    });
+</script>
+</body>
+</html>

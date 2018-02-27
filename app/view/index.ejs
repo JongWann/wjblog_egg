@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="gb2312">
+  <title>无力吐槽的银酱</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="public/css/base.css" rel="stylesheet">
+  <link href="public/css/index.css" rel="stylesheet">
+  <link href="public/css/layui.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script type="text/javascript" src="public/js/jquery.min.js"></script>
+  <script type="text/javascript" src="public/js/sliders.js"></script>
+  <script type="text/javascript" src="public/js/layui.all.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <% include ./public/head %>
+  <div class="container">
+      <div class="row">
+          <div class="col-xs-8">
+              <div class="l_box f_l">
+                  <% include ./banner %>
+                    <!-- banner代码 结束 -->
+                  <div id="articleList" class="topnews">
+                    <h2>
+                      <span>
+                        <a href="/">栏目标题</a>
+                        <a href="/">栏目标题</a>
+                        <a href="/">栏目标题</a>
+                      </span>
+                      <b>文章</b>推荐</h2>
+                  </div>
+              </div>
+          </div>
+          <div class="col-xs-4" style="padding-left:80px;">
+              <% include ./public/right %>
+          </div>
+      </div>
+  </div>
+  <footer>
+    <p class="ft-copyright"><a href="http://www.miitbeian.gov.cn/">ICP证：鄂ICP备18003581号</a></p>
+    <div id="tbox">
+      <a id="togbook" href="/"></a>
+      <a id="gotop" href="javascript:void(0)"></a>
+    </div>
+  </footer>
+</body>
+<script>
+  $(function(){
+    //分页查询文章
+    $.post('/findArticlePage',{query:{},page:0,pagesize:10},function(data){
+    var articles = data.articles;
+    var images = ['01','02','03','04','05','06'];
+    for(var i=0 ; i< articles.length; i++){
+        $("#articleList").append(
+        "<div class='blogs'>"+
+        "<figure>"+
+        "<img src='public/images/"+images[Math.floor(Math.random()*6)]+".jpg'>"+
+        "</figure>"+
+        "<ul>"+
+            "<h3>"+
+            "<a href='./showArticle?id="+articles[i]._id+"'>"+articles[i].title+"</a>"+
+            "</h3>"+
+            "<p>"+articles[i].content+"</p>"+
+            "<p class='autor'>"+
+            "<span class='lm f_l'>"+
+                "<a href='/'>个人博客</a>"+
+            "</span>"+
+            "<span class='dtime f_l'>"+articles[i].createTime.substring(0,10)+"</span>"+
+            "<span class='viewnum f_r'>浏览（"+
+        "<a href='/'>459</a>）</span>"+
+            "<span class='pingl f_r'>评论（"+
+        "<a href='/'>30</a>）</span>"+
+            "</p>"+
+        "</ul>"+
+        "</div > "
+        );
+    }
+    });
+  });
+</script>
+
+</html>
