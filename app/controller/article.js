@@ -19,9 +19,11 @@ class ArticleController extends Controller {
     const page = body.page;
     const pagesize = body.pagesize;
     const articleList = await this.ctx.service.article.findByPage(query, page, pagesize);
+    const count = await this.ctx.service.article.pageCount(query);
     this.ctx.body = {
       status: 'ok',
       articles: articleList,
+      count,
     };
   }
 

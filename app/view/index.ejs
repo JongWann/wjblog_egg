@@ -36,8 +36,8 @@
                       <b>文章</b>推荐</h2>
                   </div>
                   <div>
-                      <a href="#" class="btn btn-link btn-xs" id="previous">上一页</a>
-                      <a href="#" class="btn btn-link btn-xs" id="next">下一页</a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-xs" id="previous">上一页</a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-xs" id="next">下一页</a>
                   </div>
               </div>
           </div>
@@ -74,8 +74,7 @@
   });
 
   function articlePage(page, pagesize) {
-    console.log(parseInt(page) < 0);
-    if(parseInt(page) < 0){
+    if(page < 0){
       return;
     }else if(page == 0){
       $("#previous").addClass("disabled");
@@ -84,6 +83,17 @@
     }
     $.post('/findArticlePage',{query:{},page:page,pagesize:pagesize},function(data){
       var articles = data.articles;
+      var count = data.count;
+      console.log(count);
+      var pageCount = (count/pagesize).toFixed(0);
+      if(count % pagesize == 0){
+        pageCount--;
+      }
+      if(page < pageCount){
+        $("#next").removeClass("disabled");
+      }else{
+        $("#next").addClass("disabled");
+      }
       for(var i=0 ; i< articles.length; i++){
         appendArticle(articles[i]);
       }

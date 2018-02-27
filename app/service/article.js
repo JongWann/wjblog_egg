@@ -18,6 +18,9 @@ class ArticleService extends Service {
       .sort({ _id: 1 });
     return articleList;
   }
+  async pageCount(query) {
+    return await this.ctx.model.Article.count(query);
+  }
   async findById(id) {
     const article = await this.ctx.model.Article.findById(id);
     return article;
