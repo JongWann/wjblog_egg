@@ -12,6 +12,7 @@
     }
 </style>
 <body>
+    <input type="hidden" id='page' value="0" />
     <div class="container-fluid">
         <div class="row head-bg">
             <ul class="nav">
@@ -26,32 +27,70 @@
                 </li>
             </ul>
         </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        This is some text within a card body.
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        This is some text within a card body.
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        This is some text within a card body.
-                    </div>
-                </div>
-            </div>
+        <div class="row" id="articleList">
         </div>
     </div>
 </body>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script type="text/javascript" src="../public/js/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    $(function(){
+    articlePage($("#page").val(),10);
+
+    $("#previous").click(function(){
+      $(".blogs").remove();
+      var page = $("#page").val();
+      articlePage(page-1,10);
+      $("#page").val(page-1);
+    });
+    
+    $("#next").click(function(){
+      $(".blogs").remove();
+      var page = $("#page").val();
+      articlePage(page+1,10);
+      $("#page").val(page+1);
+    });
+  });
+
+  function articlePage(page, pagesize) {
+    if(page < 0){
+      return;
+    }else if(page == 0){
+      $("#previous").addClass("disabled");
+    }else if(page > 0){
+      $("#previous").removeClass("disabled");
+    }
+    $.post('/findArticlePage',{query:{},page:page,pagesize:pagesize},function(data){
+      var articles = data.articles;
+      var count = data.count;
+      var pageCount = (count/pagesize).toFixed(0);
+      if(count % pagesize == 0){
+        pageCount--;
+      }
+      if(page < pageCount){
+        $("#next").removeClass("disabled");
+      }else{
+        $("#next").addClass("disabled");
+      }
+      for(var i=0 ; i< articles.length; i++){
+        appendArticle(articles[i]);
+      }
+    });
+  }
+
+  function appendArticle(articles) {
+    var images = ['01','02','03','04','05','06'];
+    $("#articleList").append(
+        "<div class='col-lg-4'>"+
+            "<div class='card'>"+
+                "<div class='card-body'>"+
+                    "<h5 class='card-title'>"+articles.title+"</h5>"+
+                    "<p class='card-text'>"+articles.content+"</p>"+
+                "</div>"+
+            "</div>"+
+        "</div>"
+    );
+  }
+</script>
 </html>
