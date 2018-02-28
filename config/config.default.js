@@ -20,6 +20,10 @@ module.exports = appInfo => {
     },
   };
 
+  config.logger = {
+    consoleLevel: 'DEBUG',
+  };
+
   config.security = {
     csrf: {
       enable: false,
