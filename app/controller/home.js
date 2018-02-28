@@ -8,6 +8,11 @@ class HomeController extends Controller {
     await this.ctx.render('index.ejs', { rank, user: this.ctx.cookies.get('user') });
   }
 
+  async h5index() {
+    this.ctx.logger.debug('进入h5页面');
+    await this.ctx.render('/h5/index.ejs');
+  }
+
   async right() {
     const rank = await this.ctx.service.article.findByPage({}, 0, 5);
     await this.ctx.render('public/right.ejs', { rank, user: this.ctx.cookies.get('user') });

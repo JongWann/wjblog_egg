@@ -13,4 +13,5 @@ module.exports = app => {
   router.get('/loginPage', controller.home.loginPage);
   router.post('/login', controller.home.login);
   router.get('/aboutMe', controller.home.aboutMe);
+  router.get('/h5', controller.home.h5index);
 };
