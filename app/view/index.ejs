@@ -84,7 +84,6 @@
     $.post('/findArticlePage',{query:{},page:page,pagesize:pagesize},function(data){
       var articles = data.articles;
       var count = data.count;
-      console.log(count);
       var pageCount = (count/pagesize).toFixed(0);
       if(count % pagesize == 0){
         pageCount--;
@@ -102,6 +101,7 @@
 
   function appendArticle(articles) {
     var images = ['01','02','03','04','05','06'];
+    var count = articles.count ? articles.count : 0;
     $("#articleList").append(
         "<div class='blogs'>"+
         "<figure>"+
@@ -111,14 +111,14 @@
             "<h3>"+
             "<a href='./showArticle?id="+articles._id+"'>"+articles.title+"</a>"+
             "</h3>"+
-            "<p>"+articles.content+"</p>"+
+            "<p>"+(articles.content).substring(0,50)+"..."+"</p>"+
             "<p class='autor'>"+
             "<span class='lm f_l'>"+
                 "<a href='/'>个人博客</a>"+
             "</span>"+
             "<span class='dtime f_l'>"+articles.createTime.substring(0,10)+"</span>"+
             "<span class='viewnum f_r'>浏览（"+
-        "<a href='/'>459</a>）</span>"+
+        "<a href='/'>"+count+"</a>）</span>"+
             "<span class='pingl f_r'>评论（"+
         "<a href='/'>30</a>）</span>"+
             "</p>"+

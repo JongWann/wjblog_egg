@@ -25,6 +25,10 @@ class ArticleService extends Service {
     const article = await this.ctx.model.Article.findById(id);
     return article;
   }
+  // 更新文章信息
+  async updateById(id, data) {
+    await this.ctx.model.Article.findByIdAndUpdate(id, { $set: data });
+  }
 
 }
 module.exports = ArticleService;

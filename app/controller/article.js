@@ -32,6 +32,8 @@ class ArticleController extends Controller {
     const id = body.id;
     const article = await this.ctx.service.article.findById(id);
     const rank = await this.ctx.service.article.findByPage({}, 0, 5);
+    const count = article.count ? ++article.count : 1;
+    await this.ctx.service.article.updateById(article._id, { count });
     await this.ctx.render('showArticle.ejs', { article, rank, user: this.ctx.cookies.get('user') });
   }
 

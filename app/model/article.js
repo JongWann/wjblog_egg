@@ -8,6 +8,7 @@ module.exports = app => {
     subTitle: { type: String },
     content: { type: String },
     createTime: { type: String },
+    count: { type: String },
   });
 
   return mongoose.model('Article', UserSchema);
