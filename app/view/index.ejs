@@ -84,7 +84,7 @@
     $.post('/findArticlePage',{query:{},page:page,pagesize:pagesize},function(data){
       var articles = data.articles;
       var count = data.count;
-      var pageCount = (count/pagesize).toFixed(0);
+      var pageCount = Math.floor(count/pagesize);
       if(count % pagesize == 0){
         pageCount--;
       }
